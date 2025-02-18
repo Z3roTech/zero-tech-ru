@@ -1,1 +1,54 @@
-// app global css in SCSS form
+$margin-gap: 0.25em;
+$padding-gap: 0.25em;
+
+@for $i from 0 through 8 {
+  // margin classes
+  .m-#{$i} {
+    margin: $i * $margin-gap;
+  }
+  .mt-#{$i} {
+    margin-top: $i * $margin-gap;
+  }
+  .mb-#{$i} {
+    margin-bottom: $i * $margin-gap;
+  }
+  .ml-#{$i} {
+    margin-left: $i * $margin-gap;
+  }
+  .mr-#{$i} {
+    margin-right: $i * $margin-gap;
+  }
+  .mx-#{$i} {
+    margin-left: $i * $margin-gap;
+    margin-right: $i * $margin-gap;
+  }
+  .my-#{$i} {
+    margin-top: $i * $margin-gap;
+    margin-bottom: $i * $margin-gap;
+  }
+
+  // padding classes
+  .p-#{$i} {
+    padding: $i * $padding-gap;
+  }
+  .pt-#{$i} {
+    padding-top: $i * $padding-gap;
+  }
+  .pb-#{$i} {
+    padding-bottom: $i * $padding-gap;
+  }
+  .pl-#{$i} {
+    padding-left: $i * $padding-gap;
+  }
+  .pr-#{$i} {
+    padding-right: $i * $padding-gap;
+  }
+  .px-#{$i} {
+    padding-left: $i * $padding-gap;
+    padding-right: $i * $padding-gap;
+  }
+  .py-#{$i} {
+    padding-top: $i * $padding-gap;
+    padding-bottom: $i * $padding-gap;
+  }
+}

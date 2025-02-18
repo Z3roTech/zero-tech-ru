@@ -1,102 +1,118 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh LpR fff">
+    <q-header bordered>
       <q-toolbar>
-        <q-btn
+        <q-toolbar-title>
+          {{ t('siteHeader', { name: siteHeader }) }}
+        </q-toolbar-title>
+        <q-space />
+        <q-toggle
+          v-model="isLightMode"
+          checked-icon="light_mode"
+          color="amber-6"
+          unchecked-icon="dark_mode"
+        />
+        <q-btn-dropdown
+          size="sm"
+          dropdown-icon="fa-solid fa-language"
+          no-wrap
+          no-caps
+          no-icon-animation
           flat
           dense
+          class="ml-1"
+        >
+          <q-list dense>
+            <q-btn-toggle
+              v-model="locale"
+              :options="localeOptions"
+              size="sm"
+              toggle-color="accent"
+            ></q-btn-toggle>
+          </q-list>
+        </q-btn-dropdown>
+        <q-separator vertical dark class="mx-4" inset />
+        <q-btn
+          href="https://github.com/Z3roTech"
+          icon="fa-brands fa-github"
+          target="_blank"
           round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+          flat
+          size="sm"
+          dense
+        ></q-btn>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
+    <!-- TODO: Добавить боковое меню -->
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer class="bg-grey-8 inset-shadow">
+      <q-toolbar>
+        <q-space />
+        <div class="flex justify-center items-center footer__license mt-3 mb-2">
+          <div>&copy; 2025 Ilya Shelikov (Zero) - MIT License</div>
+          <q-btn
+            flat
+            rounded
+            href="https://github.com/Z3roTech/zero-tech-ru"
+            label="Source code on GitHub"
+            icon-right="open_in_new"
+            target="_blank"
+            size="sm"
+          ></q-btn>
+        </div>
+        <q-space />
+      </q-toolbar>
+    </q-footer>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import EssentialLink, { type EssentialLinkProps } from 'components/EssentialLink.vue';
+import { useQuasar } from 'quasar'
+import { watch, ref } from 'vue'
+import { useLocalStorage, useInterval } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 
-const linksList: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
+const $q = useQuasar()
+const { t, locale, availableLocales } = useI18n()
+const isLightMode = ref(!$q.dark.isActive)
 
-const leftDrawerOpen = ref(false);
+const localeOptions = availableLocales.map((el) => ({
+  label: el,
+  value: el,
+}))
 
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-}
+const siteHeader = ref('Zero')
+useInterval(5000, {
+  controls: true,
+  immediate: true,
+  callback: function () {
+    siteHeader.value = 'Zero'
+  },
+})
+
+watch(isLightMode, (current) => {
+  $q.dark.set(!current)
+  useLocalStorage('dark-mode', !current).value = !current
+})
+
+watch(locale, (current) => {
+  useLocalStorage('locale', current).value = current
+})
 </script>
+
+<style lang="css" scoped>
+.left-drawer__scroll-area {
+  height: calc(100% - 150px);
+  margin-top: 150px;
+  border-right: 1px solid #ddd;
+}
+
+.footer__license {
+  flex-direction: column;
+}
+</style>
