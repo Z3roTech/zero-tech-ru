@@ -1,11 +1,10 @@
 <template>
   <q-layout view="hHh LpR fff">
-    <q-header class="shadow-2">
-      <q-toolbar>
+    <q-header class="flex flex-center header-layout">
+      <q-toolbar class="bg-primary centered-layout">
         <q-toolbar-title>
           {{ t('siteHeader', { name: siteHeader }) }}
         </q-toolbar-title>
-        <q-space />
         <q-toggle
           v-model="isLightMode"
           checked-icon="light_mode"
@@ -46,13 +45,23 @@
 
     <!-- TODO: Добавить боковое меню -->
 
-    <q-page-container>
-      <q-page padding>
-        <router-view />
-      </q-page>
-    </q-page-container>
+    <div class="centered-content-wrap">
+      <!-- <q-drawer v-model="leftDrawerState" class="centered-content-drawer">
+        <q-scroll-area class="fit">
+          <div class="q-pa-sm">
+            <div v-for="n in 50" :key="n">Drawer {{ n }} / 50</div>
+          </div>
+        </q-scroll-area>
+      </q-drawer> -->
 
-    <q-footer class="bg-grey-8 inset-shadow">
+      <q-page-container class="flex flex-center">
+        <q-page padding class="centered-content-page no-box-shadow">
+          <router-view />
+        </q-page>
+      </q-page-container>
+    </div>
+
+    <q-footer class="bg-grey-9 inset-shadow">
       <q-toolbar>
         <q-space />
         <div class="flex justify-center items-center footer__license mt-3 mb-2">
@@ -83,6 +92,7 @@ import { useLocalStorage, useInterval } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 
 const now = new Date()
+// const leftDrawerState = ref(true)
 
 const $q = useQuasar()
 const { t, locale, availableLocales } = useI18n()
@@ -112,14 +122,46 @@ watch(locale, (current) => {
 })
 </script>
 
-<style lang="css" scoped>
-.left-drawer__scroll-area {
-  height: calc(100% - 150px);
-  margin-top: 150px;
-  border-right: 1px solid #ddd;
-}
+<style lang="scss" scoped>
+@use 'sass:color';
 
 .footer__license {
   flex-direction: column;
+}
+
+.header-layout {
+  background: var(--page);
+}
+
+.centered-layout {
+  box-shadow: 0 0px 5px 3px var(--q-primary);
+  border-radius: 0 0 1em 1em;
+  max-width: 1024px;
+}
+
+.centered-content-page {
+  @extend .centered-layout;
+
+  box-shadow: 0;
+  background: $grey-2;
+  .body--light & {
+    @extend .centered-content-page;
+  }
+  .body--dark & {
+    @extend .centered-content-page;
+    background: $grey-10;
+  }
+}
+
+aside.q-drawer--left div.centered-content-drawer {
+  left: unset !important;
+}
+
+.centered-content-wrap {
+  max-width: 1024px;
+  border: 1px solid var(--q-primary);
+  box-shadow: 0 0 5px 0px var(--q-primary);
+  border-radius: 0 0 1em 1em;
+  justify-self: center;
 }
 </style>
