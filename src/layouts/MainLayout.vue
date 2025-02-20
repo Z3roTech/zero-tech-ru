@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR fff">
-    <q-header bordered>
+    <q-header class="shadow-2">
       <q-toolbar>
         <q-toolbar-title>
           {{ t('siteHeader', { name: siteHeader }) }}
@@ -47,19 +47,24 @@
     <!-- TODO: Добавить боковое меню -->
 
     <q-page-container>
-      <router-view />
+      <q-page padding>
+        <router-view />
+      </q-page>
     </q-page-container>
 
     <q-footer class="bg-grey-8 inset-shadow">
       <q-toolbar>
         <q-space />
         <div class="flex justify-center items-center footer__license mt-3 mb-2">
-          <div>&copy; 2025 Ilya Shelikov (Zero) - MIT License</div>
+          <div>
+            &copy; 2024 - {{ now.getFullYear() }} {{ t('siteFooterDeveloperName') }} (Zero) - MIT
+            License
+          </div>
           <q-btn
             flat
             rounded
             href="https://github.com/Z3roTech/zero-tech-ru"
-            label="Source code on GitHub"
+            :label="t('siteFooterSourceCodeLink', { site: 'GitHub' })"
             icon-right="open_in_new"
             target="_blank"
             size="sm"
@@ -76,6 +81,8 @@ import { useQuasar } from 'quasar'
 import { watch, ref } from 'vue'
 import { useLocalStorage, useInterval } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
+
+const now = new Date()
 
 const $q = useQuasar()
 const { t, locale, availableLocales } = useI18n()

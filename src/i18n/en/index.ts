@@ -1,5 +1,5 @@
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful',
   siteHeader: "{name}'s personal site",
+  siteFooterDeveloperName: 'Ilya Shelikov',
+  siteFooterSourceCodeLink: 'Source code on {site}',
 }

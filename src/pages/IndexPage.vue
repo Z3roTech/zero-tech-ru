@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-py-md q-px-xl">
+  <div>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel orci sed ligula congue
       rutrum. Maecenas sed rhoncus turpis. Pellentesque sapien lacus, dictum nec lectus at, dictum
@@ -186,26 +186,7 @@
       Pellentesque lacus sapien, suscipit nec nisl et, tempus vestibulum metus. Vivamus ornare eget
       ipsum eget ultrices.
     </p>
-  </q-page>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { useInterval } from '@vueuse/core'
-import { ref } from 'vue'
-
-const exportedArticle = ref('')
-
-useInterval(10000, {
-  immediate: true,
-  callback: () => {
-    fetch('http://loripsum.net/api/random')
-      .then((response) => response.json())
-      .then(({ text }) => {
-        exportedArticle.value = text
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  },
-})
-</script>
+<script setup lang="ts"></script>
