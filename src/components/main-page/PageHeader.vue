@@ -1,9 +1,11 @@
 <template>
   <q-header class="flex flex-center header-layout">
     <q-toolbar class="bg-primary centered-layout header-toolbar-glow">
-      <q-toolbar-title>
+      <q-toolbar-title shrink class="clickable" @click="onTitleClick">
         {{ t('siteHeader', { name: siteHeader }) }}
+        <q-badge align="top" rounded color="accent" text-color="white"> &#x1D6FC; </q-badge>
       </q-toolbar-title>
+      <q-space />
       <q-toggle
         v-model="isLightMode"
         checked-icon="light_mode"
@@ -48,11 +50,19 @@ import { useLocalStorage } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
-const { t, locale, availableLocales } = useI18n()
-const isLightMode = ref(!$q.dark.isActive)
 
+// dark-mode toggle
+const isLightMode = ref(!$q.dark.isActive)
+watch(isLightMode, (current) => {
+  $q.dark.set(!current)
+  useLocalStorage('dark-mode', !current).value = !current
+})
+
+// l11n toggle
+const { t, locale, availableLocales } = useI18n()
 const localeOptions = availableLocales.map((el) => ({
   label: el,
   value: el,
@@ -60,15 +70,14 @@ const localeOptions = availableLocales.map((el) => ({
 
 // TODO: in future it must be animated changing of site header
 const siteHeader = ref('Zero')
-
-watch(isLightMode, (current) => {
-  $q.dark.set(!current)
-  useLocalStorage('dark-mode', !current).value = !current
-})
-
 watch(locale, (current) => {
   useLocalStorage('locale', current).value = current
 })
+
+const router = useRouter()
+async function onTitleClick() {
+  await router.push({ name: 'indexPage' })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -89,5 +98,9 @@ watch(locale, (current) => {
     box-shadow: none;
     border-radius: 0;
   }
+}
+
+.clickable:hover {
+  cursor: pointer;
 }
 </style>

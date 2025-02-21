@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh LpR fff">
+  <q-layout view="hHh Lpr fff">
     <PageHeader />
     <div class="centered-content-wrap">
       <MainLeftPageMenu />
@@ -30,6 +30,7 @@ import PageFooter from 'src/components/main-page/PageFooter.vue'
   @extend .pb-2;
 
   max-width: $breakpoint-sm;
+  width: 100vw;
   background: $grey-2;
 
   .body--light & {

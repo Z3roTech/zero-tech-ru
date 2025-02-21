@@ -1,19 +1,49 @@
 <template>
-  <q-drawer v-model="drawerState" class="centered-content-drawer" behavior="desktop" :width="200">
+  <q-drawer
+    v-model="drawerState"
+    class="centered-content-drawer"
+    show-if-above
+    behavior="desktop"
+    :width="260"
+  >
     <q-scroll-area class="fit">
-      <div class="q-pa-sm">
-        <div v-for="n in 50" :key="n">Drawer {{ n }} / 50</div>
-      </div>
+      <q-list padding class="menu-list">
+        <q-item
+          v-for="item in routeItems"
+          :key="item.id"
+          clickable
+          v-ripple
+          :active="item.isActive.value"
+          active-class="text-accent"
+          :to="item.to"
+        >
+          <q-item-section avatar>
+            <q-icon :name="item.icon" />
+          </q-item-section>
+
+          <q-item-section> {{ t(item.label) }}</q-item-section>
+        </q-item>
+      </q-list>
     </q-scroll-area>
   </q-drawer>
 </template>
 
 <script setup lang="ts">
+import type { ComputedRef } from 'vue'
 import { computed, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
+import {
+  useRoute,
+  type RouteLocationAsPathGeneric,
+  type RouteLocationAsRelativeGeneric,
+} from 'vue-router'
 
+const { t } = useI18n()
 const $q = useQuasar()
+const route = useRoute()
 
+// menu states
 const drawerState = ref($q.screen.gt.sm)
 const drawerMode = ref<'desktop' | 'mobile'>('desktop')
 const greaterThanMobileScreen = computed(() => $q.screen.gt.sm)
@@ -21,6 +51,46 @@ watch(greaterThanMobileScreen, (value) => {
   drawerMode.value = value ? 'desktop' : 'mobile'
   drawerState.value = value
 })
+
+// routing
+interface IRoutingItem {
+  id: string
+  label: string
+  to: string | RouteLocationAsRelativeGeneric | RouteLocationAsPathGeneric
+  icon: string
+  isActive: ComputedRef<boolean>
+}
+
+const routeItems: IRoutingItem[] = [
+  {
+    id: 'routerLinkAboutMe',
+    label: 'routerLinks_aboutMe',
+    to: { name: 'aboutMe' },
+    icon: 'bi-person-circle',
+    isActive: computed(() => route.name == 'aboutMe'),
+  },
+  {
+    id: 'routerLinkProjects',
+    label: 'routerLinks_projects',
+    to: { name: 'projects' },
+    icon: 'bi-git',
+    isActive: computed(() => route.name == 'projects'),
+  },
+  {
+    id: 'routerLinkForEmployers',
+    label: 'routerLinks_forEmployers',
+    to: { name: 'employers' },
+    icon: 'fa-solid fa-briefcase',
+    isActive: computed(() => route.name == 'employers'),
+  },
+  {
+    id: 'routerLinkChangelog',
+    label: 'routerLinks_changelog',
+    to: { name: 'changelog' },
+    icon: 'fa-solid fa-bars-staggered',
+    isActive: computed(() => route.name == 'changelog'),
+  },
+]
 </script>
 
 <style lang="scss">
