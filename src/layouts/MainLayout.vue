@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh LpR fff">
     <q-header class="flex flex-center header-layout">
-      <q-toolbar class="bg-primary centered-layout">
+      <q-toolbar class="bg-primary centered-layout header-glow">
         <q-toolbar-title>
           {{ t('siteHeader', { name: siteHeader }) }}
         </q-toolbar-title>
@@ -46,13 +46,13 @@
     <!-- TODO: Добавить боковое меню -->
 
     <div class="centered-content-wrap">
-      <!-- <q-drawer v-model="leftDrawerState" class="centered-content-drawer">
+      <q-drawer v-model="leftDrawerState" class="centered-content-drawer" bordered :width="200">
         <q-scroll-area class="fit">
           <div class="q-pa-sm">
             <div v-for="n in 50" :key="n">Drawer {{ n }} / 50</div>
           </div>
         </q-scroll-area>
-      </q-drawer> -->
+      </q-drawer>
 
       <q-page-container class="flex flex-center">
         <q-page padding class="centered-content-page no-box-shadow">
@@ -92,7 +92,8 @@ import { useLocalStorage, useInterval } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
 
 const now = new Date()
-// const leftDrawerState = ref(true)
+// TODO: временно поставил вечное false для показа бокового меню, так как оно в разработке
+const leftDrawerState = false
 
 const $q = useQuasar()
 const { t, locale, availableLocales } = useI18n()
@@ -130,19 +131,20 @@ watch(locale, (current) => {
 }
 
 .header-layout {
-  background: var(--page);
+  background: transparent;
 }
 
 .centered-layout {
-  box-shadow: 0 0px 5px 3px var(--q-primary);
+  max-width: $breakpoint-sm;
+}
+
+.header-glow {
+  box-shadow: 0 0px 5px 3px $primary;
   border-radius: 0 0 1em 1em;
-  max-width: 1024px;
 }
 
 .centered-content-page {
   @extend .centered-layout;
-
-  box-shadow: 0;
   background: $grey-2;
   .body--light & {
     @extend .centered-content-page;
@@ -153,15 +155,32 @@ watch(locale, (current) => {
   }
 }
 
-aside.q-drawer--left div.centered-content-drawer {
-  left: unset !important;
+.centered-content-wrap {
+  max-width: $breakpoint-sm;
+  justify-self: center;
+
+  border: 1px solid $primary;
+  box-shadow: 0 0 5px 0px $primary;
+  border-radius: 0 0 1em 1em;
+
+  @media (max-width: $breakpoint-sm) {
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0;
+  }
 }
 
-.centered-content-wrap {
-  max-width: 1024px;
-  border: 1px solid var(--q-primary);
-  box-shadow: 0 0 5px 0px var(--q-primary);
-  border-radius: 0 0 1em 1em;
-  justify-self: center;
+.centered-content-drawer {
+  left: unset !important;
+  border-right: 1px solid $primary;
+}
+
+.q-drawer {
+  &--left {
+    left: unset !important;
+  }
+  &--right {
+    right: unset !important;
+  }
 }
 </style>
