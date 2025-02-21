@@ -1,31 +1,27 @@
 <template>
-  <q-drawer
-    v-model="drawerState"
-    class="centered-content-drawer"
-    show-if-above
-    behavior="desktop"
-    :width="260"
-  >
-    <q-scroll-area class="fit">
-      <q-list padding class="menu-list">
-        <q-item
-          v-for="item in routeItems"
-          :key="item.id"
-          clickable
-          v-ripple
-          :active="item.isActive.value"
-          active-class="text-accent"
-          :to="item.to"
-        >
-          <q-item-section avatar>
-            <q-icon :name="item.icon" />
-          </q-item-section>
+  <div>
+    <q-drawer v-model="drawerState" class="centered-content-drawer" behavior="desktop" :width="260">
+      <q-scroll-area class="fit">
+        <q-list padding class="menu-list">
+          <q-item
+            v-for="item in routeItems"
+            :key="item.id"
+            clickable
+            v-ripple
+            :active="item.isActive.value"
+            active-class="text-accent"
+            :to="item.to"
+          >
+            <q-item-section avatar>
+              <q-icon :name="item.icon" />
+            </q-item-section>
 
-          <q-item-section> {{ t(item.label) }}</q-item-section>
-        </q-item>
-      </q-list>
-    </q-scroll-area>
-  </q-drawer>
+            <q-item-section> {{ t(item.label) }}</q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+  </div>
 </template>
 
 <script setup lang="ts">
