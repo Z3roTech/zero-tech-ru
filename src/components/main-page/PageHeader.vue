@@ -1,0 +1,93 @@
+<template>
+  <q-header class="flex flex-center header-layout">
+    <q-toolbar class="bg-primary centered-layout header-toolbar-glow">
+      <q-toolbar-title>
+        {{ t('siteHeader', { name: siteHeader }) }}
+      </q-toolbar-title>
+      <q-toggle
+        v-model="isLightMode"
+        checked-icon="light_mode"
+        color="amber-6"
+        unchecked-icon="dark_mode"
+      />
+      <q-btn-dropdown
+        size="sm"
+        dropdown-icon="fa-solid fa-language"
+        no-wrap
+        no-caps
+        no-icon-animation
+        flat
+        dense
+        class="ml-1"
+      >
+        <q-list ve>
+          <q-btn-toggle
+            v-model="locale"
+            :options="localeOptions"
+            size="sm"
+            toggle-color="accent"
+          ></q-btn-toggle>
+        </q-list>
+      </q-btn-dropdown>
+      <q-separator vertical dark class="mx-4" inset />
+      <q-btn
+        href="https://github.com/Z3roTech"
+        icon="fa-brands fa-github"
+        target="_blank"
+        round
+        flat
+        size="sm"
+        dense
+      ></q-btn>
+    </q-toolbar>
+  </q-header>
+</template>
+
+<script setup lang="ts">
+import { useLocalStorage } from '@vueuse/core'
+import { useQuasar } from 'quasar'
+import { ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const $q = useQuasar()
+const { t, locale, availableLocales } = useI18n()
+const isLightMode = ref(!$q.dark.isActive)
+
+const localeOptions = availableLocales.map((el) => ({
+  label: el,
+  value: el,
+}))
+
+// TODO: in future it must be animated changing of site header
+const siteHeader = ref('Zero')
+
+watch(isLightMode, (current) => {
+  $q.dark.set(!current)
+  useLocalStorage('dark-mode', !current).value = !current
+})
+
+watch(locale, (current) => {
+  useLocalStorage('locale', current).value = current
+})
+</script>
+
+<style lang="scss" scoped>
+@use 'sass:color';
+.header-layout {
+  background: transparent;
+}
+
+.centered-layout {
+  max-width: $breakpoint-sm;
+}
+
+.header-toolbar-glow {
+  box-shadow: 0 0px 5px 3px $primary;
+  border-radius: 0 0 1em 1em;
+
+  @media (max-width: $breakpoint-sm) {
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+</style>

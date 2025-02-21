@@ -36,5 +36,6 @@ locale.value = useLocalStorage('locale', locale.value).value
   @include circuit-board-background-svg(encodecolor($accent));
   background-repeat: repeat;
   background-size: 8%;
+  background-attachment: fixed;
 }
 </style>
