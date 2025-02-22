@@ -3,12 +3,12 @@
     <q-toolbar>
       <q-space />
       <div class="flex justify-center items-center footer__license mt-2 mb-1 text-grey-5 p-1">
-        <div>&copy; 2024 - {{ now.getFullYear() }} {{ t('siteFooterDeveloperName') }} (Zero)</div>
+        <div>&copy; 2024 - {{ now.getFullYear() }} {{ t('footer_developerName') }} (Zero)</div>
         <q-btn
           flat
           rounded
           href="https://github.com/Z3roTech/zero-tech-ru"
-          :label="t('siteFooterSourceCodeLink', { site: 'GitHub' })"
+          :label="t('footer_sourceCodeLink', { site: 'GitHub' })"
           icon-right="open_in_new"
           target="_blank"
           size="sm"
