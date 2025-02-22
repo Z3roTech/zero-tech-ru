@@ -1,6 +1,6 @@
 {
   "name": "zero-tech-ru",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Zero's personal web page",
   "productName": "Zero's page",
   "author": "Zero <shelikov98@yandex.ru>",
@@ -22,7 +22,7 @@
     "pinia": "^3.0.1",
     "quasar": "^2.16.0",
     "vue": "^3.4.18",
-    "vue-i18n": "^9.2.2",
+    "vue-i18n": "^9.3.0-beta.27",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {

@@ -4,7 +4,9 @@
       <q-btn class="lg-hide xl-hide md-hide" flat icon="bi-list" @click="$emit('open-left-menu')" />
       <q-toolbar-title shrink class="clickable" @click="onTitleClick">
         {{ t('header_headerTitle', { name: siteHeader }) }}
-        <q-badge align="top" rounded color="accent" text-color="white"> &#x1D6FC; </q-badge>
+        <q-badge align="top" rounded color="accent" text-color="white">
+          {{ version }} (&#x1D6FC;)
+        </q-badge>
       </q-toolbar-title>
       <q-space />
       <q-toggle
@@ -120,6 +122,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
+const version = '0.1.1'
 
 // dark-mode toggle
 const isLightMode = ref(!$q.dark.isActive)

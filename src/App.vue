@@ -1,6 +1,16 @@
 <template>
-  <div class="site-wrap">
-    <router-view />
+  <div>
+    <q-banner inline-actions class="bg-warning text-black z-max fixed-bottom" v-show="bannerShowup">
+      <q-icon size="lg" name="bi-exclamation-triangle-fill" class="mr-2" />
+      {{ t('global_devBanner_textAboutAlphaTest') }}
+
+      <template v-slot:action>
+        <q-btn flat :label="t('global_devBanner_dismissBtn')" @click="bannerShowup = false" />
+      </template>
+    </q-banner>
+    <div class="site-wrap">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -14,8 +24,11 @@ const $q = useQuasar()
 $q.dark.set(useLocalStorage('dark-mode', $q.dark.isActive).value)
 
 // locale init
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 locale.value = useLocalStorage('locale', locale.value).value
+
+// alpha-beta version banner
+const bannerShowup = useLocalStorage('banner', true)
 </script>
 
 <style lang="scss" scoped>

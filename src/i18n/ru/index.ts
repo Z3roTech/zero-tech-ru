@@ -14,4 +14,9 @@ export default {
   routerLinks_projects: 'Мои проекты',
   routerLinks_forEmployers: 'Для работодателей',
   routerLinks_changelog: 'Изменения сайта',
+
+  // global
+  global_devBanner_dismissBtn: 'Скрыть',
+  global_devBanner_textAboutAlphaTest:
+    'Данный сайт находится в стадии разработки! На некоторых страницах может не работать или не отображаться контент.',
 }

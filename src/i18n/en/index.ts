@@ -14,4 +14,9 @@ export default {
   routerLinks_projects: 'My projects',
   routerLinks_forEmployers: 'For employers',
   routerLinks_changelog: 'Changelogs',
+
+  // global
+  global_devBanner_dismissBtn: 'Dismiss',
+  global_devBanner_textAboutAlphaTest:
+    'This site is under development! Some pages may not work or may not display content.',
 }
