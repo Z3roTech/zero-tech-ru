@@ -1,16 +1,15 @@
 <template>
-  <q-layout view="hHh Lpr fff">
-    <PageHeader />
-    <div class="centered-content-wrap">
-      <MainLeftPageMenu />
+  <q-layout :view="'hHh Lpr fff'">
+    <PageHeader @open-left-menu="openLeftMenu" />
 
+    <div class="centered-content-wrap">
+      <MainLeftPageMenu ref="layoutLeftMenu" />
       <q-page-container class="flex flex-center">
         <q-page class="centered-content-page">
           <router-view />
         </q-page>
       </q-page-container>
     </div>
-
     <PageFooter />
   </q-layout>
 </template>
@@ -19,6 +18,13 @@
 import PageHeader from 'src/components/main-page/PageHeader.vue'
 import MainLeftPageMenu from 'src/components/main-page/MainLeftPageMenu.vue'
 import PageFooter from 'src/components/main-page/PageFooter.vue'
+import { templateRef } from '@vueuse/core'
+// provide action from btn to left menu component
+const leftMenu = templateRef('layoutLeftMenu')
+
+const openLeftMenu = () => {
+  leftMenu.value?.toggleMenuState()
+}
 </script>
 
 <style lang="scss" scoped>

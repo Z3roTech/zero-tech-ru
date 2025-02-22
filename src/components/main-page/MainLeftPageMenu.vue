@@ -1,6 +1,12 @@
 <template>
   <div>
-    <q-drawer v-model="drawerState" class="centered-content-drawer" behavior="desktop" :width="260">
+    <q-drawer
+      v-model="drawerState"
+      class="centered-content-drawer"
+      :behavior="drawerMode"
+      :width="260"
+      :overlay="greaterThanMobileScreen ? false : true"
+    >
       <q-scroll-area class="fit">
         <q-list padding class="menu-list">
           <q-item
@@ -15,7 +21,6 @@
             <q-item-section avatar>
               <q-icon :name="item.icon" />
             </q-item-section>
-
             <q-item-section> {{ t(item.label) }}</q-item-section>
           </q-item>
         </q-list>
@@ -40,12 +45,27 @@ const $q = useQuasar()
 const route = useRoute()
 
 // menu states
+const greaterThanMobileScreen = computed(() => $q.screen.gt.sm)
 const drawerState = ref($q.screen.gt.sm)
 const drawerMode = ref<'desktop' | 'mobile'>('desktop')
-const greaterThanMobileScreen = computed(() => $q.screen.gt.sm)
-watch(greaterThanMobileScreen, (value) => {
-  drawerMode.value = value ? 'desktop' : 'mobile'
-  drawerState.value = value
+watch(
+  greaterThanMobileScreen,
+  (value) => {
+    drawerMode.value = value ? 'desktop' : 'mobile'
+    drawerState.value = value
+  },
+  {
+    immediate: true,
+  },
+)
+
+function toggleMenuState() {
+  console.log('hello!?')
+  drawerState.value = !drawerState.value
+}
+
+defineExpose({
+  toggleMenuState,
 })
 
 // routing
@@ -83,7 +103,7 @@ const routeItems: IRoutingItem[] = [
     id: 'routerLinkChangelog',
     label: 'routerLinks_changelog',
     to: { name: 'changelog' },
-    icon: 'fa-solid fa-bars-staggered',
+    icon: 'bi-list-columns-reverse',
     isActive: computed(() => route.name == 'changelog'),
   },
 ]
@@ -93,6 +113,10 @@ const routeItems: IRoutingItem[] = [
 .q-drawer {
   &:has(.centered-content-drawer) {
     box-shadow: inset -5px 0px 7px -7px $primary;
+
+    @media (max-width: $breakpoint-sm) {
+      box-shadow: unset;
+    }
   }
 
   &--left:has(.centered-content-drawer) {

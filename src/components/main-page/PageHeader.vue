@@ -1,6 +1,7 @@
 <template>
   <q-header class="flex flex-center header-layout">
     <q-toolbar class="bg-primary centered-layout header-toolbar-glow">
+      <q-btn class="lg-hide xl-hide md-hide" flat icon="bi-list" @click="$emit('open-left-menu')" />
       <q-toolbar-title shrink class="clickable" @click="onTitleClick">
         {{ t('siteHeader', { name: siteHeader }) }}
         <q-badge align="top" rounded color="accent" text-color="white"> &#x1D6FC; </q-badge>
@@ -13,7 +14,7 @@
         unchecked-icon="dark_mode"
       />
       <q-btn-dropdown
-        size="sm"
+        size="md"
         dropdown-icon="fa-solid fa-language"
         no-wrap
         no-caps
@@ -22,13 +23,20 @@
         dense
         class="ml-1"
       >
-        <q-list ve>
-          <q-btn-toggle
-            v-model="locale"
-            :options="localeOptions"
-            size="sm"
-            toggle-color="accent"
-          ></q-btn-toggle>
+        <q-list dense bordered>
+          <q-item
+            v-for="(item, index) in localeOptions"
+            :key="`locale-${index}`"
+            clickable
+            v-ripple
+            :active="item.isActive()"
+            @click="locale = item.value"
+            active-class="bg-accent text-white"
+          >
+            <q-item-section class="text-center">
+              <span :class="['fi', item.flag]"></span>
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-btn-dropdown>
       <q-separator vertical dark class="mx-4" inset />
@@ -38,7 +46,7 @@
         target="_blank"
         round
         flat
-        size="sm"
+        size="md"
         dense
       ></q-btn>
     </q-toolbar>
@@ -46,6 +54,7 @@
 </template>
 
 <script setup lang="ts">
+import '/node_modules/flag-icons/css/flag-icons.min.css'
 import { useLocalStorage } from '@vueuse/core'
 import { useQuasar } from 'quasar'
 import { ref, watch } from 'vue'
@@ -62,10 +71,23 @@ watch(isLightMode, (current) => {
 })
 
 // l11n toggle
+interface ILocaleOption {
+  label: string
+  value: string
+  isActive: () => boolean
+  flag: string
+}
 const { t, locale, availableLocales } = useI18n()
-const localeOptions = availableLocales.map((el) => ({
+const localeFlags: { [index: string]: string | undefined } = {
+  en: 'fi-us',
+  ru: 'fi-ru',
+}
+
+const localeOptions: ILocaleOption[] = availableLocales.map((el) => ({
   label: el,
   value: el,
+  isActive: () => el == locale.value,
+  flag: localeFlags[el] || 'fi-xx',
 }))
 
 // TODO: in future it must be animated changing of site header
