@@ -122,7 +122,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
-const version = '0.1.1'
+const version = '0.1.2'
 
 // dark-mode toggle
 const isLightMode = ref(!$q.dark.isActive)

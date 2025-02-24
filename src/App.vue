@@ -24,8 +24,7 @@ const $q = useQuasar()
 $q.dark.set(useLocalStorage('dark-mode', $q.dark.isActive).value)
 
 // locale init
-const { locale, t } = useI18n()
-locale.value = useLocalStorage('locale', locale.value).value
+const { t } = useI18n()
 
 // alpha-beta version banner
 const bannerShowup = useLocalStorage('banner', true)
