@@ -120,9 +120,10 @@ import { useQuasar } from 'quasar'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { useGlobalStore } from 'src/stores/globalStore'
 
 const $q = useQuasar()
-const version = '0.1.2'
+const version = useGlobalStore().$state.version
 
 // dark-mode toggle
 const isLightMode = ref(!$q.dark.isActive)
